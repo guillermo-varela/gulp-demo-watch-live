@@ -18,13 +18,11 @@ var runSequence = require('run-sequence');
 gulp.task('inject', function () {
   return gulp.src('index.html', {cwd: './app'})
     .pipe(inject(
-      gulp.src('**/*.js', {cwd: './app'}), {
-        read: false,
+      gulp.src('**/*.js', {cwd: './app', read: false}), {
         relative: true
       }))
     .pipe(inject(
-      gulp.src('**/*.css', {cwd: './app'}), {
-        read: false,
+      gulp.src('**/*.css', {cwd: './app', read: false}), {
         relative: true
       }))
     .pipe(gulp.dest('./app'));
@@ -51,14 +49,16 @@ gulp.task('copy:assets', function () {
 gulp.task('jshint', function() {
   return gulp.src('**/*.js', {cwd: './app'})
     .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'));
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(jshint.reporter('fail'));
 });
 
 // Looks for code style errors in JS and prints them
 gulp.task('jscs', function () {
   return gulp.src('**/*.js', {cwd: './app'})
     .pipe(jscs())
-    .pipe(jscs.reporter());
+    .pipe(jscs.reporter())
+    .pipe(jscs.reporter('fail'));
 });
 
 // Cleans the dist folder
