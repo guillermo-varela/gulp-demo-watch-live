@@ -10,7 +10,6 @@ var cssnano     = require('gulp-cssnano');
 var jshint      = require('gulp-jshint');
 var jscs        = require('gulp-jscs');
 var del         = require('del');
-var watch       = require('gulp-watch');
 var connect     = require('gulp-connect');
 var runSequence = require('run-sequence');
 
@@ -70,8 +69,10 @@ gulp.task('clean:dist', function () {
 gulp.task('watch', function() {
   gulp.watch('**/*.css', {cwd: './app'}, ['inject']);
   gulp.watch('**/*.js', {cwd: './app'}, ['jshint', 'jscs', 'inject']);
-  watch('**/*.html', {cwd: './app'})
-    .pipe(connect.reload());
+  gulp.watch('**/*.html', {cwd: './app'}, function (event) {
+    gulp.src(event.path)
+      .pipe(connect.reload());
+  });
 });
 
 // Starts a development web server
